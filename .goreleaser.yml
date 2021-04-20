@@ -1,6 +1,7 @@
 release:
-  github: sundowndev
-  name: goreleaser-template
+  github:
+    owner: sundowndev
+    name: goreleaser-template
   draft: true
   prerelease: auto
 before:
