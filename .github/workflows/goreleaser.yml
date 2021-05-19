@@ -24,11 +24,10 @@ jobs:
           sudo apt-add-repository https://cli.github.com/packages
           sudo apt update
           sudo apt install gh
-          gh issue list
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --rm-dist
+          args: release --rm-dist --release-notes <(gh issue list -L 100 -s closed)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
