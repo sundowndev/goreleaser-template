@@ -25,6 +25,12 @@ jobs:
           sudo apt update
           sudo apt install gh
           gh issue list --limit 100 --state closed > /tmp/changelog.txt
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
@@ -32,3 +38,4 @@ jobs:
           args: release --rm-dist --release-notes=/tmp/changelog.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

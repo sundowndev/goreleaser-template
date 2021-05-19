@@ -9,6 +9,10 @@ before:
   hooks:
     - go mod tidy
     - go generate ./...
+signs:
+  - signature: "${artifact}_SHA256SUMS.gpg"
+    artifacts: all
+    args: ["-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
 builds:
   - id: "myproject-build"
     binary: myproject
@@ -25,16 +29,16 @@ builds:
       - arm
       - arm64
       - 386
+    replacements:
+      armv6: arm
     ldflags: -s -w -X github.com/cloudskiff/driftctl/build.env=release -X github.com/sundowndev/goreleaser-template.version={{.Version}}
 archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: binary
     files:
-      - none*
+      - /tmp/myproject_SHA256SUMS.gpg
 checksum:
-  name_template: '{{ .ProjectName }}_SHA256SUMS.txt'
+  name_template: '{{ .ProjectName }}_SHA256SUMS'
   algorithm: sha256
 snapshot:
   name_template: "{{ .Tag }}-next"
-changelog:
-  skip: true
