@@ -24,11 +24,11 @@ jobs:
           sudo apt-add-repository https://cli.github.com/packages
           sudo apt update
           sudo apt install gh
-          gh issue list --limit 100 --state closed > changelog.txt
+          gh issue list --limit 100 --state closed > /tmp/changelog.txt
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --rm-dist --release-notes=changelog.txt
+          args: release --rm-dist --release-notes=/tmp/changelog.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
