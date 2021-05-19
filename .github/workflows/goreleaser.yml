@@ -28,6 +28,6 @@ jobs:
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --rm-dist --release-notes <(gh issue list -L 100 -s closed)
+          args: release --rm-dist --release-notes <(gh issue list --limit 100 --state closed)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
