@@ -29,12 +29,12 @@ builds:
       - arm
       - arm64
       - 386
-    replacements:
-      armv6: arm
     ldflags: -s -w -X github.com/cloudskiff/driftctl/build.env=release -X github.com/sundowndev/goreleaser-template.version={{.Version}}
 archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: binary
+    replacements:
+      armv6: arm
     files:
       - /tmp/myproject_SHA256SUMS.gpg
 checksum:
