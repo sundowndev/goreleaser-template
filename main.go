@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-const version = "dev"
+var version = "dev"
 
 func main() {
 	fmt.Println("Hello, world!", version)
