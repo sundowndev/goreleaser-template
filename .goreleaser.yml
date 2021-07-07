@@ -44,8 +44,8 @@ snapshot:
   name_template: "{{ .Tag }}-next"
 dockers:
   - image_templates:
+      - "sundowndev/goreleaser-template:latest"
       - "sundowndev/goreleaser-template:{{ .Version }}"
-      - "sundowndev/goreleaser-template:{{ .Tag }}"
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
