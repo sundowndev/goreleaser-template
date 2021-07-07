@@ -46,7 +46,6 @@ dockers:
   - image_templates:
       - "sundowndev/goreleaser-template:latest"
       - "sundowndev/goreleaser-template:{{ .Version }}"
-    skip_push: true
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
