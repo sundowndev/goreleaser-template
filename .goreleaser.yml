@@ -10,9 +10,9 @@ before:
     - go mod tidy
     - go generate ./...
 signs:
-  - signature: "${artifact}_SHA256SUMS.gpg"
-    artifacts: all
-    args: ["-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
+  - signature: "myproject_SHA256SUMS.gpg"
+    artifacts: checksum
+    args: [ "--batch", "-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}" ]
 builds:
   - id: "myproject-build"
     binary: myproject
@@ -29,9 +29,9 @@ builds:
       - arm
       - arm64
       - 386
-    ldflags: -s -w -X github.com/sundowndev/goreleaser-template.version={{.Version}}
+    ldflags: "-X github.com/sundowndev/goreleaser-template.version={{.Version}}"
 archives:
-  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
     format: binary
     replacements:
       armv6: arm
@@ -42,3 +42,27 @@ checksum:
   algorithm: sha256
 snapshot:
   name_template: "{{ .Tag }}-next"
+dockers:
+  - image_templates:
+      - "sundowndev/goreleaser-template:latest"
+      - "sundowndev/goreleaser-template:{{ .Version }}"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/sundowndev/goreleaser-template
+      - --label=org.opencontainers.image.source=https://github.com/sundowndev/goreleaser-template
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=MIT
+      - --platform=linux/amd64
+nfpms:
+  - maintainer: sundowndev <raphael@crvx.fr>
+    description: sample project
+    homepage: https://github.com/sundowndev/goreleaser-template
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
