@@ -10,7 +10,7 @@ before:
     - go mod tidy
     - go generate ./...
 signs:
-  - signature: "${artifact}_SHA256SUMS.gpg"
+  - signature: "{{ .ProjectName }}_SHA256SUMS.gpg"
     artifacts: all
     args: ["-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
 builds:
@@ -42,3 +42,24 @@ checksum:
   algorithm: sha256
 snapshot:
   name_template: "{{ .Tag }}-next"
+dockers:
+- image_templates: ["sundowndev/goreleaser-template:{{ .Version }}"]
+  dockerfile: Dockerfile
+  build_flag_templates:
+  - --label=org.opencontainers.image.title={{ .ProjectName }}
+  - --label=org.opencontainers.image.description={{ .ProjectName }}
+  - --label=org.opencontainers.image.url=https://github.com/sundowndev/goreleaser-template
+  - --label=org.opencontainers.image.source=https://github.com/sundowndev/goreleaser-template
+  - --label=org.opencontainers.image.version={{ .Version }}
+  - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+  - --label=org.opencontainers.image.revision={{ .FullCommit }}
+  - --label=org.opencontainers.image.licenses=MIT
+nfpms:
+- maintainer: sundowndev <raphael@crvx.fr>
+  description: sample project
+  homepage: https://github.com/sundowndev/goreleaser-template
+  license: MIT
+  formats:
+  - deb
+  - rpm
+  - apk
