@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/sundowndev/goreleaser-template/version"
 )
 
-var version = "dev"
-
 func main() {
-	fmt.Println("Hello, world!", version)
+	fmt.Println("Hello, world!", version.Version)
 }
