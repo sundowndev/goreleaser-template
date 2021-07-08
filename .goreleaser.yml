@@ -10,7 +10,7 @@ before:
     - go mod tidy
     - go generate ./...
 signs:
-  - signature: "${artifact}_SHA256SUMS.gpg"
+  - signature: "${artifact}.gpg"
     artifacts: checksum
     args: [ "--batch", "-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}" ]
 builds:
