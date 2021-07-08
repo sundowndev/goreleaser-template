@@ -10,7 +10,7 @@ before:
     - go mod tidy
     - go generate ./...
 signs:
-  - signature: "myproject_SHA256SUMS.gpg"
+  - signature: "${artifact}_SHA256SUMS.gpg"
     artifacts: checksum
     args: [ "--batch", "-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}" ]
 builds:
@@ -35,8 +35,6 @@ archives:
     format: binary
     replacements:
       armv6: arm
-    files:
-      - /tmp/myproject_SHA256SUMS.gpg
 checksum:
   name_template: '{{ .ProjectName }}_SHA256SUMS'
   algorithm: sha256
