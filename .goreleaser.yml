@@ -29,7 +29,7 @@ builds:
       - arm
       - arm64
       - 386
-    ldflags: "-X github.com/sundowndev/goreleaser-template.version={{.Version}}"
+    ldflags: "-X github.com/sundowndev/goreleaser-template/version.Version={{ .Version }}"
 archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
     format: binary
