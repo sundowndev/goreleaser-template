@@ -3,7 +3,7 @@ release:
   github:
     owner: sundowndev
     name: goreleaser-template
-  draft: true
+  draft: false
   prerelease: auto
 before:
   hooks:
@@ -29,7 +29,7 @@ builds:
       - arm
       - arm64
       - 386
-    ldflags: "-X github.com/sundowndev/goreleaser-template/version.Version={{ .Version }}"
+    ldflags: "-X github.com/sundowndev/goreleaser-template/version.Version={{ .Tag }}"
 archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
     format: binary
@@ -43,7 +43,7 @@ snapshot:
 dockers:
   - image_templates:
       - "sundowndev/goreleaser-template:latest"
-      - "sundowndev/goreleaser-template:{{ .Version }}"
+      - "sundowndev/goreleaser-template:{{ .Tag }}"
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
@@ -60,6 +60,7 @@ nfpms:
     description: sample project
     homepage: https://github.com/sundowndev/goreleaser-template
     license: MIT
+    file_name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
     formats:
       - deb
       - rpm
